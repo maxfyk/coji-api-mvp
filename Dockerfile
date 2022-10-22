@@ -8,20 +8,13 @@ COPY nginx.conf /etc/nginx/conf.d/virtual.conf
 
 RUN apt-get -y update && \
 	apt-get -y install \
-	gcc \
     git \
-    build-essential \
-	default-libmysqlclient-dev \
 	python3-dev \
     libjpeg-dev \
     zlib1g-dev \
-    ffmpeg \
-    libsm6 \
-    libxext6 \
-    nginx \
-    ca-certificates \
-    openssl
+    ffmpeg
 
+RUN apt-get -y install gcc
 
 RUN python3 -m pip install -r requirements.txt
 

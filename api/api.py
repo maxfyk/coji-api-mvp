@@ -1,4 +1,3 @@
-from statics.commons import upd_pickled_styles
 from modules.db_operations import init_db_app
 
 init_db_app()
