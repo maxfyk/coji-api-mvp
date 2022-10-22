@@ -183,7 +183,7 @@ def decode_pieces(main_square, pieces_names):
             tile_o = remove_noise(tile_o)
             tiles.append(tile_o)
 
-    bw_path = os.path.join(STYLES_PATH_FULL, STYLE_NAME, 'pieces/bw/')
+    bw_path = os.path.join(STYLES_PATH_FULL.format(STYLE_NAME), 'pieces/bw/')
     pieces = [{'img': cv2.imread(bw_path + p + '.png', 0), 'name': p} for p in pieces_names.keys()]
 
     codes = []
