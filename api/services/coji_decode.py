@@ -36,7 +36,7 @@ def coji_decode():
         if 'data:image/' in image_str:  # if image contains a tag
             image_str = image_str.split(',')[1]
         img = string_img_to_cv2(image_str)
-        if not img:
+        if type(img) is bool:
             return jsonify(error=404, text=f'Corrupted image', notify_user=False), 422
 
         style_name = detect_style(img)
