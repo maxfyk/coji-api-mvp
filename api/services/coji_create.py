@@ -38,7 +38,7 @@ def coji_create():
 
     _, index = get_last_code().popitem()
     index = index['index'] + 1
-    char_code = generate_code_id(index, style_module['keys'], style_module['style_info'])  # generate random id
+    char_code = generate_code_id(index, style_module['keys'], style_module['style-info'])  # generate random id
     img = generate_visual_code(style_module, char_code,
                                STYLES_PATH_FULL.format(style_name))  # create image
     json_request['index'] = index
