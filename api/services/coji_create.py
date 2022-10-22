@@ -27,7 +27,7 @@ def coji_create():
     print('REQUEST| CREATE')
 
     request_check = verify_code_create_request(json_request)
-    if not request_check:
+    if type(request_check) is bool:
         return request_check
 
     json_request['time-created'] = json_request['time-updated'] = str(datetime.now())
@@ -60,7 +60,7 @@ def coji_update():
     print('REQUEST| UPDATE')
 
     request_check = verify_code_update_request(json_request)
-    if not request_check:
+    if type(request_check) is bool:
         return request_check
 
     json_request['time-updated'] = str(datetime.now())

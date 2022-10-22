@@ -27,7 +27,7 @@ def coji_decode():
     print('REQUEST| DECODE')
 
     request_check = verify_code_decode_request(json_request)
-    if not request_check:
+    if type(request_check) is bool:
         return request_check
 
     char_code = None
