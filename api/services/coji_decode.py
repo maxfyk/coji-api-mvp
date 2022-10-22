@@ -91,7 +91,8 @@ def coji_decode():
 def coji_get(id):
     """Get all the info about code by id"""
     print('REQUEST| GET', id)
-    print(type(id), len(id))
+    print(type(id) != 'str', len(id) > 16)
+    print(type(id) != 'str' or len(id) > 16)
     if type(id) != 'str' or len(id) > 16:
         print('STATUS: Bad id')
         return jsonify(error=415, text='Bad id', notify_user=False), 415
