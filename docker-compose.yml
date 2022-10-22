@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  coji-api:
+    container_name: coji-api
+    hostname: coji-api
+    build: .
+    env_file:
+      - .api-env
+    volumes:
+      - ./api:/app
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - network
+
+networks:
+  network:
