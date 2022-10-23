@@ -55,7 +55,7 @@ def coji_decode():
 
     elif decode_type == 'keyboard':
         style_name = json_request['style-info']['name']
-        char_code = json_request['in-data']
+        char_code = json_request['in-data'].lower()
 
     if not char_code:
         print('STATUS: bad image')
