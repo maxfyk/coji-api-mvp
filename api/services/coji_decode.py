@@ -29,7 +29,6 @@ def coji_decode():
 
     request_check = verify_code_decode_request(json_request)
     if type(request_check) is not bool:
-
         return request_check
 
     char_code = None
@@ -85,10 +84,13 @@ def coji_decode():
 
     print('STATUS: success')
     print('---------------')
-    return jsonify({
+
+    resp = jsonify({
         'error': False,
         'code-id': code_guess,
-    }), 200
+    })
+    resp.headers.add("Access-Control-Allow-Origin", "*")
+    return resp, 200
 
 
 @coji_decode_bp.route('/get/<id>', methods=['get'])
