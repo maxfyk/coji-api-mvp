@@ -10,6 +10,7 @@ from modules.db_operations import (
     get_all_keys
 )
 from modules import recognize_code
+from statics.constants import RESPONSE_DECODE_ERROR_DICTS as RDED
 from modules.recognize_code_style import detect_style
 from statics.commons import (
     get_style_info,
@@ -32,7 +33,9 @@ def coji_decode():
         return request_check
 
     char_code = None
-    if json_request['decode-type'] == 'image':
+    decode_type = json_request['decode-type']
+
+    if decode_type == 'image':
         image_str = json_request['in-data']
         if 'data:image/' in image_str:  # if image contains a tag
             image_str = image_str.split(',')[1]
@@ -50,7 +53,7 @@ def coji_decode():
             print(e)
             char_code = None
 
-    elif json_request['decode-type'] == 'keyboard':
+    elif decode_type == 'keyboard':
         style_name = json_request['style-info']['name']
         char_code = json_request['in-data']
 
@@ -64,7 +67,7 @@ def coji_decode():
     code_guess = difflib.get_close_matches(char_code, all_keys)
     if not len(code_guess):
         print('No db matches...')
-        return jsonify(error=404, text=f'Bad photo, please try again!', notify_user=False), 422
+        return jsonify(error=404, text=f'{RDED[decode_type]}, please try again!', notify_user=False), 422
 
     code_guess = code_guess[0]
     print('Code guess:', code_guess)
@@ -74,7 +77,7 @@ def coji_decode():
     print('Similarity:', similarity)
 
     if similarity < 0.5:
-        return jsonify(error=404, text=f'Blurry photo, please try again!', notify_user=False), 422
+        return jsonify(error=404, text=f'{RDED[decode_type]}, please try again!', notify_user=False), 422
 
     code_exists = find_code(code_guess)
     if code_exists is None:
