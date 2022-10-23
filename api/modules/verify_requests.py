@@ -29,7 +29,7 @@ def verify_code_update_request(json_request):
         print('STATUS: Missing required keys')
         return jsonify(error=422, text='Missing required keys', notify_user=False), 422
 
-    if type(json_request['code-id']) != 'str' or len(json_request['code-id']) != 16:
+    if len(json_request['code-id']) != 16:
         print('STATUS: Wrong code id')
         return jsonify(error=415, text='Wrong code id', notify_user=False), 422
 
