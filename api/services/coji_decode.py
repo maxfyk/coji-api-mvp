@@ -89,7 +89,7 @@ def coji_decode():
         'error': False,
         'code-id': code_guess,
     })
-    resp.headers.add("Access-Control-Allow-Origin", "*")
+    resp.headers.add('Access-Control-Allow-Origin', '*')
     return resp, 200
 
 
