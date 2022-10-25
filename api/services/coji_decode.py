@@ -115,10 +115,19 @@ def coji_get(id):
 
 
 @coji_decode_bp.route('/get-by-city/<location>', methods=['get'])
-def coji_get_by_ity(location):
+def coji_get_by_city(location):
     """Get all the codes in the city"""
     print('REQUEST| GET BY CITY', location)
     geolocator = Nominatim(user_agent="geoapiExercises")
     address = geolocator.reverse(location).raw['address']
-    city = address.get('city', None)
-    country = address.get('country', '')
+    city = address.get('ISO3166-2-lvl4', None)
+    codes = get_by_city(city)
+    codes = {k: v['location'] for k, v in codes.items()}
+    print({
+        'error': False,
+        'data': codes,
+    })
+    return jsonify({
+        'error': False,
+        'data': codes,
+    }), 200

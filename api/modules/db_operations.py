@@ -70,8 +70,8 @@ def get_all_keys(db_root=None):
     return db_root.child('code').get(shallow=True)
 
 
-def get_by_city(db_root=None):
+def get_by_city(city, db_root=None):
     """Get list of all codes by city"""
     if not db_root:
         db_root = get_db_session()
-    return db_root.child('code').get(shallow=True)
+    return db_root.child('code').order_by_child('location-city').equal_to(city).get()
