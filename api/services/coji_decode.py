@@ -123,10 +123,6 @@ def coji_get_by_city(location):
     city = address.get('ISO3166-2-lvl4', None)
     codes = get_by_city(city)
     codes = {k: v['location'] for k, v in codes.items()}
-    print({
-        'error': False,
-        'data': codes,
-    })
     return jsonify({
         'error': False,
         'data': codes,
