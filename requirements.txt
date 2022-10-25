@@ -7,4 +7,5 @@ flask_cors
 imageio
 opencv-contrib-python==4.6.*
 firebase_admin
+geopy
 dill

@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import Blueprint
 from flask import jsonify
 from flask import request
+from geopy.geocoders import Nominatim
 
 from modules import (
     generate_code_id,
@@ -30,6 +31,13 @@ def coji_create():
     if type(request_check) is not bool:
         return request_check
 
+    location = json_request.get('location')
+    if location:
+        geolocator = Nominatim(user_agent="geoapiExercises")
+        address = geolocator.reverse(location).raw['address']
+        address['location'] = location
+        json_request['location'] = address
+        
     json_request['time-created'] = json_request['time-updated'] = str(datetime.now())
 
     style_name = json_request['style-info']['name']
