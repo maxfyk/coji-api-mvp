@@ -37,7 +37,7 @@ def coji_create():
         address = geolocator.reverse(location).raw['address']
         address['location'] = location
         json_request['location'] = address
-        
+
     json_request['time-created'] = json_request['time-updated'] = str(datetime.now())
 
     style_name = json_request['style-info']['name']
@@ -50,6 +50,7 @@ def coji_create():
     img = generate_visual_code(style_module, char_code,
                                STYLES_PATH_FULL.format(style_name))  # create image
     json_request['index'] = index
+    print(json_request)
     new_code = prepare_code_info(json_request, char_code)
     add_new_code(new_code)
     print(new_code)
