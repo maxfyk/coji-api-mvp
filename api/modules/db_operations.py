@@ -19,7 +19,7 @@ def get_db_session():
 
 
 def get_last_code(db_root=None):
-    """Get data of latest code created"""
+    """Get data of the latest code created"""
     if not db_root:
         db_root = get_db_session()
     val = None
@@ -65,6 +65,13 @@ def get_code(code_id, db_root=None):
 
 def get_all_keys(db_root=None):
     """Get list of all keys that currently exist"""
+    if not db_root:
+        db_root = get_db_session()
+    return db_root.child('code').get(shallow=True)
+
+
+def get_by_city(db_root=None):
+    """Get list of all codes by city"""
     if not db_root:
         db_root = get_db_session()
     return db_root.child('code').get(shallow=True)

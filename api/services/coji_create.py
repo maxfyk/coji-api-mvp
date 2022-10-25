@@ -35,8 +35,8 @@ def coji_create():
     if location:
         geolocator = Nominatim(user_agent="geoapiExercises")
         address = geolocator.reverse(location).raw['address']
-        address['location'] = location
-        json_request['location'] = address
+        json_request['location-city'] = address['ISO3166-2-lvl4']
+        json_request['location'] = location
 
     json_request['time-created'] = json_request['time-updated'] = str(datetime.now())
 

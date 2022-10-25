@@ -1,22 +1,24 @@
-import base64
 import difflib
+
 from flask import Blueprint
 from flask import jsonify
 from flask import request
+from geopy.geocoders import Nominatim
 
+from modules import recognize_code
 from modules.db_operations import (
     find_code,
+    get_all_keys,
     get_code,
-    get_all_keys
+    get_by_city
 )
-from modules import recognize_code
-from statics.constants import RESPONSE_DECODE_ERROR_DICTS as RDED
 from modules.recognize_code_style import detect_style
+from modules.verify_requests import verify_code_decode_request
 from statics.commons import (
     get_style_info,
     string_img_to_cv2
 )
-from modules.verify_requests import verify_code_decode_request
+from statics.constants import RESPONSE_DECODE_ERROR_DICTS as RDED
 
 coji_decode_bp = Blueprint('coji-decode', __name__)
 
@@ -110,3 +112,13 @@ def coji_get(id):
         'error': False,
         'data': code_data,
     }), 200
+
+
+@coji_decode_bp.route('/get-by-city/<location>', methods=['get'])
+def coji_get_by_ity(location):
+    """Get all the codes in the city"""
+    print('REQUEST| GET BY CITY', location)
+    geolocator = Nominatim(user_agent="geoapiExercises")
+    address = geolocator.reverse(location).raw['address']
+    city = address.get('city', None)
+    country = address.get('country', '')
