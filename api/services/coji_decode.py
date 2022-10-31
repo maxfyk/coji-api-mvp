@@ -37,7 +37,6 @@ def coji_decode():
     decode_data = json_request.get('user-data', None)
     if decode_data:
         decode_data = json_request.pop('user-data')
-    print(decode_data)
     char_code = None
     decode_type = json_request['decode-type']
 
