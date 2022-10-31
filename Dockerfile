@@ -14,7 +14,9 @@ RUN apt-get -y update && \
     zlib1g-dev \
     ffmpeg
 
-RUN apt-get -y install gcc
+RUN apt-get -y install \
+    gcc\
+    build-essential
 
 RUN python3 -m pip install -r requirements.txt
 
