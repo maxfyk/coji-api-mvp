@@ -6,6 +6,7 @@ from flask import request
 from geopy.geocoders import Nominatim
 
 from modules import recognize_code
+from modules import stats_logger
 from modules.db_operations import (
     find_code,
     get_all_keys,
@@ -32,8 +33,8 @@ def coji_decode():
     request_check = verify_code_decode_request(json_request)
     if type(request_check) is not bool:
         return request_check
+    decode_data = json_request.pop('user-data')
 
-    print(json_request['user-data'])
     char_code = None
     decode_type = json_request['decode-type']
 
@@ -85,6 +86,8 @@ def coji_decode():
     if code_exists is None:
         return jsonify(error=404, text=f'This code no longer exists!\nCode:{char_code}', notify_user=False), 422
 
+    decode_data['code'] = code_guess
+    stats_logger.add_decode(decode_data)
     print('STATUS: success')
     print('---------------')
 

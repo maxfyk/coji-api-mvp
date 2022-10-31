@@ -6,6 +6,8 @@ Pillow===6.2.2
 flask_cors
 imageio
 opencv-contrib-python==4.6.*
+prometheus_client==0.15.0
+python-geohash==0.8.5
 firebase_admin
 geopy
 dill
