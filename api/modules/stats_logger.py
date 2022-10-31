@@ -24,6 +24,6 @@ def add_decode(decode_data):
     registry = CollectorRegistry()
     c = Counter('decode_request', 'details about code decode request',
                 data_labels, registry=registry)
-    c.labels(decode_data.values()).inc(1)
+    c.labels(*decode_data.values()).inc(1)
     push_to_gateway('pushgateway:9091', job='decode_request',
                     registry=registry)  # push data to pushgateway
