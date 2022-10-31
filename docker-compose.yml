@@ -19,6 +19,7 @@ services:
 
   prometheus:
     image: prom/prometheus
+    user: root
     restart: always
     networks:
       - network
