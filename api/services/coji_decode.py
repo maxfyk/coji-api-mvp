@@ -33,10 +33,11 @@ def coji_decode():
     if type(request_check) is not bool:
         return request_check
 
+    print(json_request['user-data'])
     char_code = None
     decode_type = json_request['decode-type']
 
-    if decode_type == 'image':
+    if decode_type in ('image', 'scan'):
         image_str = json_request['in-data']
         if 'data:image/' in image_str:  # if image contains a tag
             image_str = image_str.split(',')[1]
