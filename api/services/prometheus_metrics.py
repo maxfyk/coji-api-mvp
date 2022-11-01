@@ -12,8 +12,12 @@ prometheus_metrics = Blueprint('prometheus-metrics', __name__)
 @prometheus_metrics.route('/metrics', methods=['get'])
 def prometheus_metrics_get():
     """Scrape metrics"""
-    registry = CollectorRegistry()
-    multiprocess.MultiProcessCollector(registry)
-    resp = Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
-    stats_logger.decode_request.set(0)
-    return resp
+    try:
+        registry = CollectorRegistry()
+        multiprocess.MultiProcessCollector(registry)
+        resp = Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
+        stats_logger.decode_request.set(0)
+        return resp
+    except Exception as e:
+        print(e)
+        return ''
