@@ -1,6 +1,9 @@
 import os
+import glob
 
+[os.remove(f) for f in glob.glob('/app/prometheus_metrics')]
 os.environ['prometheus_multiproc_dir'] = '/app/prometheus_metrics'
+
 from modules import stats_logger
 from flask import Blueprint
 from flask import Response
