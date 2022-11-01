@@ -31,6 +31,7 @@ def coji_create():
     if type(request_check) is not bool:
         return request_check
 
+    json_request['location-city'] = None
     location = json_request.get('location')
     if location:
         geolocator = Nominatim(user_agent="geoapiExercises")
