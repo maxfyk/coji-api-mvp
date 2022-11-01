@@ -4,7 +4,7 @@ os.environ['prometheus_multiproc_dir'] = '/app/prometheus_metrics'
 from modules import stats_logger
 from flask import Blueprint
 from flask import Response
-from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest, multiprocess
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 prometheus_metrics = Blueprint('prometheus-metrics', __name__)
 

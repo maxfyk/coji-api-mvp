@@ -9,6 +9,7 @@ from statics.constants import DECODE_LOGS_DATA_LABELS
 
 class StatsLogger():
     def __init__(self):
+        self.registry = None
         self.decode_request_labels_dict = {k: k.replace('-', '_') for k in DECODE_LOGS_DATA_LABELS}
         self.decode_request = self.get_new_decode_request_counter()
 
@@ -31,9 +32,10 @@ class StatsLogger():
         self.decode_request.labels(*out_data.values()).inc(1)
 
     def get_new_decode_request_counter(self):
+        del self.registry
         self.registry = CollectorRegistry()
         return Counter('decode_request', 'details about code decode request',
-                       self.decode_request_labels_dict.values())
+                       self.decode_request_labels_dict.values(), registry=self.registry)
 
 
 stats_logger = StatsLogger()
