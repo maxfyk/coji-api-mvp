@@ -28,7 +28,7 @@ services:
       - ./data/prometheus:/prometheus
       - ./prometheus-web.yml:/etc/password/web.yml
     command:
-#      - '--web.config.file=/etc/password/web.yml'
+      - '--web.config.file=/etc/password/web.yml'
       - '--query.lookback-delta=1m'
       - '--config.file=/etc/prometheus/prometheus.yml'
     links:

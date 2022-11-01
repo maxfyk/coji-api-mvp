@@ -5,6 +5,13 @@ from prometheus_client import (
     Counter,
     push_to_gateway
 )
+from prometheus_client.exposition import basic_auth_handler
+
+
+def auth_handler(url, method, timeout, headers, data):
+    username = 'admin'
+    password = 'secret123'
+    return basic_auth_handler(url, method, timeout, headers, data, username, password)
 
 
 def add_decode(decode_data):
@@ -26,4 +33,4 @@ def add_decode(decode_data):
                 data_labels, registry=registry)
     c.labels(*decode_data.values()).inc(1)
     push_to_gateway('pushgateway:9091', job='decode_request',
-                    registry=registry)  # push data to pushgateway
+                    registry=registry, handler=auth_handler)  # push data to pushgateway
