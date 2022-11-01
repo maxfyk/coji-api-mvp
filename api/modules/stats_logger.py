@@ -8,8 +8,9 @@ from statics.constants import DECODE_LOGS_DATA_LABELS
 
 class StatsLogger():
     def __init__(self):
+        self.decode_request_labels_dict = {k: k.replace('-', '_') for k in DECODE_LOGS_DATA_LABELS}
         self.decode_request = Counter('decode_request', 'details about code decode request',
-                                      DECODE_LOGS_DATA_LABELS)
+                                      self.decode_request_labels_dict.values())
 
     def add_decode_request(self, decode_data):
         """Save decode details to prometheus"""
@@ -24,7 +25,10 @@ class StatsLogger():
         del decode_data['lon']
         decode_data['location'] = geohash_val
 
-        self.decode_request.labels(*decode_data.values()).inc(1)
+        out_data = {}
+        for k, v in self.decode_request_labels_dict.items():
+            out_data[v] = decode_data[k]
+        self.decode_request.labels(*out_data.values()).inc(1)
 
 
 stats_logger = StatsLogger()
