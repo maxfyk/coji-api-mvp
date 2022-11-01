@@ -16,9 +16,9 @@ prometheus_metrics = Blueprint('prometheus-metrics', __name__)
 def prometheus_metrics_get():
     """Scrape metrics"""
     try:
-        multiprocess.MultiProcessCollector(stats_logger.registry)
+        stats_logger.registry.collect()
         resp = Response(generate_latest(stats_logger.registry), mimetype=CONTENT_TYPE_LATEST)
-        stats_logger.decode_request._metrics.clear()
+        stats_logger.decode_request.clear()
         return resp
     except Exception as e:
         print(e)
