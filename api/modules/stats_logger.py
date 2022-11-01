@@ -9,8 +9,7 @@ from statics.constants import DECODE_LOGS_DATA_LABELS
 class StatsLogger():
     def __init__(self):
         self.decode_request_labels_dict = {k: k.replace('-', '_') for k in DECODE_LOGS_DATA_LABELS}
-        self.decode_request = Counter('decode_request', 'details about code decode request',
-                                      self.decode_request_labels_dict.values())
+        self.decode_request = self.get_new_decode_request_counter()
 
     def add_decode_request(self, decode_data):
         """Save decode details to prometheus"""
@@ -29,6 +28,10 @@ class StatsLogger():
         for k, v in self.decode_request_labels_dict.items():
             out_data[v] = decode_data[k]
         self.decode_request.labels(*out_data.values()).inc(1)
+
+    def get_new_decode_request_counter(self):
+        return Counter('decode_request', 'details about code decode request',
+                       self.decode_request_labels_dict.values())
 
 
 stats_logger = StatsLogger()
