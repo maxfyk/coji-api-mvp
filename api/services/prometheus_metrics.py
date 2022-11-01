@@ -14,4 +14,6 @@ def prometheus_metrics_get():
     """Scrape metrics"""
     registry = CollectorRegistry()
     multiprocess.MultiProcessCollector(registry)
-    return Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
+    resp = Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
+    stats_logger.decode_request.set(0)
+    return resp
