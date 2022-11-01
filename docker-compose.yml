@@ -29,8 +29,6 @@ services:
       - '--web.config.file=/etc/password/web.yml'
       - '--query.lookback-delta=1m'
       - '--config.file=/etc/prometheus/prometheus.yml'
-    links:
-      - pushgateway
     ports:
       - 9090:9090
     depends_on:
