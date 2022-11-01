@@ -10,10 +10,28 @@ services:
     volumes:
       - ./api:/app
     ports:
-      - "8000:8000"
+      - 8000:8000
     restart: always
     networks:
       - network
 
+  prometheus:
+    image: prom/prometheus
+    user: root
+    restart: always
+    networks:
+      - network
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/prometheus:/prometheus
+      - ./prometheus-web.yml:/etc/password/web.yml
+    command:
+      - '--web.config.file=/etc/password/web.yml'
+      - '--query.lookback-delta=1m'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    depends_on:
+      - coji-api
 networks:
   network:

@@ -4,8 +4,10 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 from geopy.geocoders import Nominatim
+from threading import Thread
 
 from modules import recognize_code
+from modules import stats_logger
 from modules.db_operations import (
     find_code,
     get_all_keys,
@@ -33,15 +35,22 @@ def coji_decode():
     if type(request_check) is not bool:
         return request_check
 
+    decode_data = json_request.get('user-data', None)
+    if decode_data:
+        decode_data = json_request.pop('user-data')
     char_code = None
     decode_type = json_request['decode-type']
 
-    if decode_type == 'image':
+    if decode_type in ('image', 'scan'):
         image_str = json_request['in-data']
         if 'data:image/' in image_str:  # if image contains a tag
             image_str = image_str.split(',')[1]
         img = string_img_to_cv2(image_str)
         if type(img) is bool:
+            if decode_data:
+                decode_data['code'] = None
+                decode_data['error'] = 'Corrupted image'
+                Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
             return jsonify(error=404, text=f'Corrupted image', notify_user=False), 422
 
         style_name = detect_style(img)
@@ -60,6 +69,10 @@ def coji_decode():
 
     if not char_code:
         print('STATUS: bad image')
+        if decode_data:
+            decode_data['code'] = None
+            decode_data['error'] = 'Code not found'
+            Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
         return jsonify(error=404, text='Code not found :(\nPlease try again!', notify_user=False), 422
 
     print('Code found:', char_code)
@@ -68,6 +81,10 @@ def coji_decode():
     code_guess = difflib.get_close_matches(char_code, all_keys)
     if not len(code_guess):
         print('No db matches...')
+        if decode_data:
+            decode_data['code'] = None
+            decode_data['error'] = RDED[decode_type]
+            Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
         return jsonify(error=404, text=f'{RDED[decode_type]}, please try again!', notify_user=False), 422
 
     code_guess = code_guess[0]
@@ -78,12 +95,24 @@ def coji_decode():
     print('Similarity:', similarity)
 
     if similarity < 0.5:
+        if decode_data:
+            decode_data['code'] = None
+            decode_data['error'] = RDED[decode_type]
+            Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
         return jsonify(error=404, text=f'{RDED[decode_type]}, please try again!', notify_user=False), 422
 
     code_exists = find_code(code_guess)
     if code_exists is None:
+        if decode_data:
+            decode_data['code'] = code_guess
+            decode_data['error'] = 'Expired'
+            Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
         return jsonify(error=404, text=f'This code no longer exists!\nCode:{char_code}', notify_user=False), 422
 
+    if decode_data:
+        decode_data['code'] = code_guess
+        decode_data['error'] = None
+        Thread(target=stats_logger.add_decode_request, args=(decode_data,)).start()
     print('STATUS: success')
     print('---------------')
 
