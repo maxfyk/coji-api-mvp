@@ -18,6 +18,7 @@ def prometheus_metrics_get():
     try:
         multiprocess.MultiProcessCollector(stats_logger.registry)
         resp = Response(generate_latest(stats_logger.registry), mimetype=CONTENT_TYPE_LATEST)
+        [os.remove(f) for f in glob.glob('/app/prometheus_metrics/*')]
         stats_logger.get_new_decode_request_counter()
         return resp
     except Exception as e:
