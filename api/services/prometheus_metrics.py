@@ -1,7 +1,7 @@
 import os
 import glob
 
-[os.remove(f) for f in glob.glob('/app/prometheus_metrics')]
+[os.remove(f) for f in glob.glob('/app/prometheus_metrics/*')]
 os.environ['prometheus_multiproc_dir'] = '/app/prometheus_metrics'
 
 from modules import stats_logger
