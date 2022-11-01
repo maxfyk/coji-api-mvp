@@ -14,8 +14,6 @@ services:
     restart: always
     networks:
       - network
-    depends_on:
-      - prometheus
 
   prometheus:
     image: prom/prometheus
@@ -33,10 +31,9 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
     links:
       - pushgateway
-    depends_on:
-      - pushgateway
     ports:
       - 9090:9090
-
+    depends_on:
+      - coji-api
 networks:
   network:
