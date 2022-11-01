@@ -6,7 +6,7 @@ prometheus_metrics = Blueprint('prometheus-metrics', __name__)
 
 
 @prometheus_metrics.route('/metrics', methods=['get'])
-def prometheus_metrics():
+def prometheus_metrics_get():
     """Scrape metrics"""
     registry = CollectorRegistry()
     multiprocess.MultiProcessCollector(registry)
