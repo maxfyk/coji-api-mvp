@@ -19,3 +19,7 @@ COJI_DECODE_REQUEST_KEYS = ('decode-type', 'in-data', 'user-id', 'style-info', '
 # commons
 STYLES_PATH_SHORT = 'styles/{}/'
 STYLES_PATH_FULL = os.path.join(os.path.dirname(os.path.abspath(__file__)), STYLES_PATH_SHORT)
+
+# stats_logger
+DECODE_LOGS_DATA_LABELS = (
+    'code', 'error', 'location', 'decode-type', 'device', 'os', 'os-version', 'browser', 'browser-version')
