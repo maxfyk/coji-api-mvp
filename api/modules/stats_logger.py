@@ -1,4 +1,5 @@
 import geohash
+import os
 
 from prometheus_client import (
     CollectorRegistry,
@@ -9,8 +10,8 @@ from prometheus_client.exposition import basic_auth_handler
 
 
 def auth_handler(url, method, timeout, headers, data):
-    username = 'admin'
-    password = 'secret123'
+    username = os.environ['PROMETHEUS_USER']
+    password = os.environ['PROMETHEUS_PASS']
     return basic_auth_handler(url, method, timeout, headers, data, username, password)
 
 
