@@ -16,7 +16,7 @@ def prometheus_metrics_get():
         registry = CollectorRegistry()
         multiprocess.MultiProcessCollector(registry)
         resp = Response(generate_latest(registry), mimetype=CONTENT_TYPE_LATEST)
-        stats_logger.decode_request.set(0)
+        stats_logger.decode_request.clear()
         return resp
     except Exception as e:
         print(e)

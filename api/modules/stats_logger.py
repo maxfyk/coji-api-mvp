@@ -1,6 +1,6 @@
 import geohash
 from prometheus_client import (
-    Gauge
+    Counter
 )
 
 from statics.constants import DECODE_LOGS_DATA_LABELS
@@ -30,7 +30,7 @@ class StatsLogger():
         self.decode_request.labels(*out_data.values()).inc(1)
 
     def get_new_decode_request_counter(self):
-        return Gauge('decode_request', 'details about code decode request',
+        return Counter('decode_request', 'details about code decode request',
                      self.decode_request_labels_dict.values())
 
 
