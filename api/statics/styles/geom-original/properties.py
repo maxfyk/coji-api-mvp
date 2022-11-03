@@ -9,7 +9,9 @@ style_module['style-info'] = {
     'border': {
         'border-size': 15,
         'border-color': (255, 191, 0),  # 'yellow',
-    }
+    },
+    'add-template': True,
+    'template-offset': (22, 22),
 }
 
 style_module['style-info']['total-length'] = \

@@ -31,6 +31,14 @@ def generate_visual_code(style_module: dict, code_id: str, style_path: str):
 
     coji_code = ImageOps.expand(coji_code, border=style_info['border']['border-size'],
                                 fill=tuple(style_info['border']['border-color']))
+
+    if style_info['add-template']:
+        template = Image.open(
+            os.path.join(style_path, 'pieces', 'code-template.jpg')
+        )
+        Image.paste(template, coji_code, style_info['template-offset'])
+        coji_code = template
+        
     with io.BytesIO() as out:
         coji_code.save(out, format='JPEG', quality=100, optimize=True)
         return encodebytes(out.getvalue()).decode()
