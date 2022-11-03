@@ -33,7 +33,6 @@ def generate_visual_code(style_module: dict, code_id: str, style_path: str):
                                 fill=tuple(style_info['border']['border-color']))
 
     if style_info['template']['add-template']:
-        coji_code = coji_code.resize(style_info['template']['resize-to'])
         template = Image.open(
             os.path.join(style_path, 'pieces', 'code-template.jpg')
         )

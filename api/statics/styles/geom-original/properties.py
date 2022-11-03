@@ -12,8 +12,7 @@ style_module['style-info'] = {
     },
     'template': {
         'add-template': True,
-        'template-offset': (13, 13),
-        'resize-to': (650, 650)
+        'template-offset': (16, 16),
     }
 }
 
