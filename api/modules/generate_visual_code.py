@@ -36,7 +36,7 @@ def generate_visual_code(style_module: dict, code_id: str, style_path: str):
         template = Image.open(
             os.path.join(style_path, 'pieces', 'code-template.jpg')
         )
-        template.paste(coji_code, style_info['template-offset'], coji_code)
+        template.paste(coji_code, style_info['template-offset'])
         coji_code = template
 
     with io.BytesIO() as out:
