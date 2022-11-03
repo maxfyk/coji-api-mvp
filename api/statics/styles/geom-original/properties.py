@@ -10,8 +10,11 @@ style_module['style-info'] = {
         'border-size': 15,
         'border-color': (255, 191, 0),  # 'yellow',
     },
-    'add-template': True,
-    'template-offset': (22, 22),
+    'template': {
+        'add-template': True,
+        'template-offset': (13, 13),
+        'resize-to': (650, 650)
+    }
 }
 
 style_module['style-info']['total-length'] = \
