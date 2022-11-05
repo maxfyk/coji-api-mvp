@@ -159,7 +159,7 @@ def coji_get_by_city(location):
 
 
 @coji_decode_bp.route('/get-asset/<code_id>/<asset_name>', methods=['get'])
-def coji_get_by_city(code_id, asset_name):
+def coji_get_asset(code_id, asset_name):
     """Return ar-preview asset"""
     print(f'REQUEST| GET ASSET {code_id} / {asset_name}')
     if len(code_id) != 16:
