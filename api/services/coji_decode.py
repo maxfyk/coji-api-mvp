@@ -158,7 +158,7 @@ def coji_get_by_city(location):
     }), 200
 
 
-@coji_decode_bp.router('/get-asset/<code_id>/<asset_name>', methods=['get'])
+@coji_decode_bp.route('/get-asset/<code_id>/<asset_name>', methods=['get'])
 def coji_get_by_city(code_id, asset_name):
     """Return ar-preview asset"""
     print(f'REQUEST| GET ASSET {code_id} / {asset_name}')
