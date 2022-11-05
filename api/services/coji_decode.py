@@ -1,8 +1,8 @@
 import difflib
-
+import os.path
 from flask import Blueprint
 from flask import jsonify
-from flask import request
+from flask import request, send_file
 from geopy.geocoders import Nominatim
 from threading import Thread
 
@@ -156,3 +156,21 @@ def coji_get_by_city(location):
         'error': False,
         'data': codes,
     }), 200
+
+
+@coji_decode_bp.router('/get-asset/<code_id>/<asset_name>', methods=['get'])
+def coji_get_by_city(code_id, asset_name):
+    """Return ar-preview asset"""
+    print(f'REQUEST| GET ASSET {code_id} / {asset_name}')
+    if len(code_id) != 16:
+        print('ERROR| BAD ID')
+        return jsonify(error=415, text='Bad id', notify_user=False), 415
+    if '.' not in asset_name:
+        print('ERROR| BAD ASSET NAME')
+        return jsonify(error=404, text='Bad asset name', notify_user=False), 404
+
+    if not os.path.isfile(f'/app/assets/{code_id}/{asset_name}'):
+        print('ERROR| FILE NOT FOUND')
+        return jsonify(error=404, text='File not found', notify_user=False), 404
+
+    return send_file(f'/app/assets/{code_id}/{asset_name}')
