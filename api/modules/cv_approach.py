@@ -222,7 +222,7 @@ def cv_detector(img_orig, style_module):
     square = change_brightness(square, value=40)  # increases
     # cv2.imshow('image', square)
     # cv2.waitKey(0)
-    return decode_pieces(square, style_module['name_to_key'])
+    return decode_pieces(square, style_module['name-to-key'])
 
 
 if __name__ == '__main__':

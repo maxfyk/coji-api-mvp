@@ -14,7 +14,7 @@ def pieces_generator(code_id: str):
 def generate_visual_code(style_module: dict, code_id: str, style_path: str):
     """Visualize string code"""
     style_info = style_module['style-info']
-    key_to_name = style_module['key_to_name']
+    key_to_name = style_module['key-to-name']
 
     coji_code = Image.new('RGB', (style_info['size'], style_info['size']), tuple(style_info['background-color']))
     piece_size = int(style_info['size'] / style_info['pieces-row'])

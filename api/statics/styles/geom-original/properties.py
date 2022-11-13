@@ -19,7 +19,7 @@ style_module['style-info'] = {
 style_module['style-info']['total-length'] = \
     style_module['style-info']['rows'] * style_module['style-info']['pieces-row']
 
-style_module['name_to_key'] = {
+style_module['name-to-key'] = {
     'circle': 'a',
     'd-arrow': 'b',
     'e-circle': 'c',
@@ -37,7 +37,7 @@ style_module['name_to_key'] = {
     'v-bar': 'o',
     'x': 'p'
 }
-style_module['key_to_name'] = {v: k for k, v in style_module['name_to_key'].items()}
+style_module['key-to-name'] = {v: k for k, v in style_module['name-to-key'].items()}
 
-style_module['names'] = list(style_module['name_to_key'].keys())
-style_module['keys'] = list(style_module['key_to_name'].keys())
+style_module['names'] = list(style_module['name-to-key'].keys())
+style_module['keys'] = list(style_module['key-to-name'].keys())
