@@ -14,7 +14,7 @@ def pieces_generator(code_id: str):
 def generate_visual_code(style_module: dict, code_id: str, style_path: str):
     """Visualize string code"""
     style_info = style_module['style-info']
-    key_to_name = style_module['key_to_name']
+    key_to_name = style_module['key-to-name']
 
     coji_code = Image.new('RGB', (style_info['size'], style_info['size']), tuple(style_info['background-color']))
     piece_size = int(style_info['size'] / style_info['pieces-row'])
@@ -29,12 +29,12 @@ def generate_visual_code(style_module: dict, code_id: str, style_path: str):
             coji_code.paste(piece, (piece_size * cur_col, piece_size * cur_row), piece)
             piece.close()
 
-    coji_code = ImageOps.expand(coji_code, border=style_info['border']['border-size'],
-                                fill=tuple(style_info['border']['border-color']))
+    # coji_code = ImageOps.expand(coji_code, border=style_info['border']['border-size'],
+    #                             fill=tuple(style_info['border']['border-color']))
 
     if style_info['template']['add-template']:
         template = Image.open(
-            os.path.join(style_path, 'pieces', 'code-template.jpg')
+            os.path.join(style_path, 'pieces', 'code-template-v2.jpg')
         )
         template.paste(coji_code, style_info['template']['template-offset'])
         coji_code = template
