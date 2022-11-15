@@ -8,6 +8,8 @@ imageio
 opencv-contrib-python==4.6.*
 prometheus_client==0.15.0
 python-geohash==0.8.5
+torchvision==0.10.0
 firebase_admin
+onnxruntime
 geopy
 dill
