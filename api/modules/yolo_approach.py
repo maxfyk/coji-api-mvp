@@ -2,8 +2,8 @@ from os.path import join as path_join
 import numpy as np
 import cv2
 import onnxruntime
-#
-# # from statics.constants import STYLES_PATH_FULL
+from statics.constants import STYLES_PATH_FULL
+
 # STYLES_PATH_FULL = '..\statics\styles\geom-original'
 # style_module = {}
 #
