@@ -17,9 +17,9 @@ RUN apt-get -y update && \
 RUN apt-get -y install \
     gcc\
     build-essential
-WORKDIR /app
 
-RUN python3 -m pip install -r /app/requirements.txt
+RUN python3 -m pip install -r requirements.txt
+WORKDIR /app
 RUN python3 -m pip install -r /app/yolov7/requirements.txt
 
 
