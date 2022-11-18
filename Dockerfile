@@ -17,10 +17,11 @@ RUN apt-get -y update && \
 RUN apt-get -y install \
     gcc\
     build-essential
+WORKDIR /app
 
 RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install -r yolov7/requirements.txt
 
-WORKDIR /app
 
 EXPOSE 80
 ENTRYPOINT ["sh", "/start.sh"]
