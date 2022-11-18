@@ -79,7 +79,6 @@ def process_results(codes, pieces):
 def yolo_detector(img, style_module):
     # Preprocess the image
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = Image.fromarray(img)
 
     model = models[style_module['style-info']['name']]

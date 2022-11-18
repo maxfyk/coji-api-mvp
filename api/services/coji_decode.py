@@ -164,15 +164,23 @@ def coji_get_by_city(location):
 def coji_get_asset(code_id, asset_name):
     """Return ar-preview asset"""
     print(f'REQUEST| GET ASSET {code_id} / {asset_name}')
-    if len(code_id) != 16:
+    if len(code_id) != 16 and code_id != 'model':
         print('ERROR| BAD ID')
         return jsonify(error=415, text='Bad id', notify_user=False), 415
-    if '.' not in asset_name:
-        print('ERROR| BAD ASSET NAME')
-        return jsonify(error=404, text='Bad asset name', notify_user=False), 404
+    if code_id == 'model':
+        if not os.path.isfile(f'/app/assets/models/{asset_name}'):
+            print('ERROR| FILE NOT FOUND')
+            return jsonify(error=404, text='File not found', notify_user=False), 404
 
-    if not os.path.isfile(f'/app/assets/{code_id}/{asset_name}'):
-        print('ERROR| FILE NOT FOUND')
-        return jsonify(error=404, text='File not found', notify_user=False), 404
+        return send_file(f'/app/assets/models/{asset_name}')
 
-    return send_file(f'/app/assets/{code_id}/{asset_name}')
+    else:
+        if '.' not in asset_name:
+            print('ERROR| BAD ASSET NAME')
+            return jsonify(error=404, text='Bad asset name', notify_user=False), 404
+
+        if not os.path.isfile(f'/app/assets/{code_id}/{asset_name}'):
+            print('ERROR| FILE NOT FOUND')
+            return jsonify(error=404, text='File not found', notify_user=False), 404
+
+        return send_file(f'/app/assets/{code_id}/{asset_name}')
