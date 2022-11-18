@@ -104,7 +104,7 @@ def yolo_detector(img, style_module):
     if result:
         out_code = ''
         for p in result['pieces']:
-            out_code += style_module['name-to-key'][p[-1]]
+            out_code += style_module['name-to-key'][style_module['object-detection-model']['key-to-name'][p[-1]]]
         return out_code
 
     else:
