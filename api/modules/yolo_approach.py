@@ -91,9 +91,6 @@ def yolo_detector(img, style_module):
         angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
         angles.append(angle)
 
-    cv2.imshow("Detected lines", img)
-    key = cv2.waitKey(0)
-
     median_angle = np.median(angles)
     img = ndimage.rotate(img, median_angle)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
