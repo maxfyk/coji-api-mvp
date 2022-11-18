@@ -2,7 +2,7 @@ import os
 import cv2
 import torch.onnx
 import math
-# from PIL import Image
+from PIL import Image
 from statics.constants import STYLES_PATH_FULL
 
 models = {
@@ -13,18 +13,18 @@ models = {
 IMG_SIZE = 640
 
 
-def preprocess(img):
-    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    # img = img.transpose((2, 0, 1))
-    img = img.reshape(1, 3, IMG_SIZE, IMG_SIZE)
-    # mean_vec = np.array([0.485, 0.456, 0.406])
-    # stddev_vec = np.array([0.229, 0.224, 0.225])
-    # norm_img_data = np.zeros(img.shape).astype('float32')
-    # for i in range(img.shape[0]):
-    #     # for each pixel and channel
-    #     # divide the value by 255 to get value between [0, 1]
-    #     norm_img_data[i, :, :] = (img[i, :, :] / 255 - mean_vec[i]) / stddev_vec[i]
-    return img
+# def preprocess(img):
+#     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+#     img = img.transpose((2, 0, 1))
+#     img = img.reshape(1, 3, IMG_SIZE, IMG_SIZE)
+#     # mean_vec = np.array([0.485, 0.456, 0.406])
+#     # stddev_vec = np.array([0.229, 0.224, 0.225])
+#     # norm_img_data = np.zeros(img.shape).astype('float32')
+#     # for i in range(img.shape[0]):
+#     #     # for each pixel and channel
+#     #     # divide the value by 255 to get value between [0, 1]
+#     #     norm_img_data[i, :, :] = (img[i, :, :] / 255 - mean_vec[i]) / stddev_vec[i]
+#     return img
 
 
 def piece_in_code(p1, p2, point):
@@ -78,7 +78,10 @@ def process_results(codes, pieces):
 
 def yolo_detector(img, style_module):
     # Preprocess the image
-    img = preprocess(img)
+    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = Image.fromarray(img)
+
     model = models[style_module['style-info']['name']]
     results = model([img]).pred[0].tolist()
     pieces, codes = [], []
