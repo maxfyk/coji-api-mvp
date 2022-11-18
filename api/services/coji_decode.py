@@ -1,11 +1,12 @@
 import difflib
 import os.path
+import traceback
+
 from flask import Blueprint
 from flask import jsonify
 from flask import request, send_file
 from geopy.geocoders import Nominatim
 from threading import Thread
-
 from modules import recognize_code
 from modules import stats_logger
 from modules.db_operations import (
@@ -60,6 +61,7 @@ def coji_decode():
         try:
             char_code = recognize_code(img, style_module)  # recognize code on image
         except Exception as e:
+            print(traceback.format_exc())
             print(e)
             char_code = None
 
