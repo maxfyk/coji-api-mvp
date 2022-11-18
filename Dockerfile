@@ -19,8 +19,8 @@ RUN apt-get -y install \
     build-essential
 WORKDIR /app
 
-RUN python3 -m pip install -r requirements.txt
-RUN python3 -m pip install -r yolov7/requirements.txt
+RUN python3 -m pip install -r /app/requirements.txt
+RUN python3 -m pip install -r /app/yolov7/requirements.txt
 
 
 EXPOSE 80
