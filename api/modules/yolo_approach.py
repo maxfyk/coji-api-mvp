@@ -1,22 +1,30 @@
-from os.path import join as path_join
-import numpy as np
+import os
 import cv2
-import onnxruntime
+import torch.onnx
+import math
+from PIL import Image
 from statics.constants import STYLES_PATH_FULL
+
+models = {
+    'geom-original': torch.hub.load('WongKinYiu/yolov7', 'custom',
+                                    os.path.join(STYLES_PATH_FULL.format('geom-original'), 'model.pt'))
+}
+
+IMG_SIZE = 640
 
 
 def preprocess(img):
-    img = cv2.resize(img, (640, 640))
+    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
     img = img.transpose((2, 0, 1))
-    img = img.reshape(1, 3, 640, 640)
-    mean_vec = np.array([0.485, 0.456, 0.406])
-    stddev_vec = np.array([0.229, 0.224, 0.225])
-    norm_img_data = np.zeros(img.shape).astype('float32')
-    for i in range(img.shape[0]):
-        # for each pixel and channel
-        # divide the value by 255 to get value between [0, 1]
-        norm_img_data[i, :, :] = (img[i, :, :] / 255 - mean_vec[i]) / stddev_vec[i]
-    return norm_img_data
+    img = img.reshape(1, 3, IMG_SIZE, IMG_SIZE)
+    # mean_vec = np.array([0.485, 0.456, 0.406])
+    # stddev_vec = np.array([0.229, 0.224, 0.225])
+    # norm_img_data = np.zeros(img.shape).astype('float32')
+    # for i in range(img.shape[0]):
+    #     # for each pixel and channel
+    #     # divide the value by 255 to get value between [0, 1]
+    #     norm_img_data[i, :, :] = (img[i, :, :] / 255 - mean_vec[i]) / stddev_vec[i]
+    return img
 
 
 def piece_in_code(p1, p2, point):
@@ -41,9 +49,10 @@ def process_results(codes, pieces):
             if piece_in_code((code[0], code[1]), (code[2], code[3]), piece_center):
                 all_codes[code_id]['pieces'].append([piece_center] + piece)
                 break
-    out_codes = []
+    out_codes = {}
     for code_id, code in all_codes.items():
-        if len(code['pieces']) == 16:  # == 16
+        if len(code['pieces']) >= 16:  # == 16
+            code['pieces'] = sorted(code['pieces'], key=lambda p: p[0][-2])[:16]
             code['pieces'] = sorted(code['pieces'], key=lambda p: p[0][0])
             rows = [
                 sorted(code['pieces'][:4], key=lambda p: p[0][1]),
@@ -58,35 +67,31 @@ def process_results(codes, pieces):
                 sorted_pieces.append(rows[2][index])
                 sorted_pieces.append(rows[3][index])
             code['pieces'] = sorted_pieces
-            out_codes.append(code)
-    return out_codes
+            xy2 = IMG_SIZE / 2
+            code_center = (
+                (code['code-data'][2] + code['code-data'][0]) / 2, (code['code-data'][3] + code['code-data'][1]) / 2)
+            distance_to_center = math.sqrt((xy2 - code_center[0]) ** 2 + (xy2 - code_center[1]) ** 2)
+            out_codes[distance_to_center] = code
+
+    return out_codes[sorted(out_codes)[0]]  # return the closest code to the center
 
 
 def yolo_detector(img, style_module):
-    img_in = img.copy()
     # Preprocess the image
     img = preprocess(img)
-
-    model_dir = STYLES_PATH_FULL.format(style_module['style-info']['name'])
-    model = path_join(model_dir, 'model.onnx')
-
-    session = onnxruntime.InferenceSession(model, None)
-    input_name = session.get_inputs()[0].name
-    output_name = session.get_outputs()[0].name
-
-    results = session.run([output_name], {input_name: img})
-    print(results)
+    model = models[style_module['style-info']['name']]
+    results = model([img]).pred[0].tolist()
     pieces, codes = [], []
-    for r in results[0]:
-        piece_name = style_module['object-detection-model']['key-to-name'][r[-2]]
+    for r in results:
+        piece_name = style_module['object-detection-model']['key-to-name'][r[-1]]
         if piece_name == 'coji-frame':
             continue
 
         if piece_name == 'coji-code':
-            codes.append(list(r)[1:])
+            codes.append(list(r))
             codes[-1][-2] = piece_name
         else:
-            pieces.append(list(r)[1:])
+            pieces.append(list(r))
             pieces[-1][-2] = piece_name
 
     [print(c) for c in codes]
@@ -97,7 +102,7 @@ def yolo_detector(img, style_module):
         result = result[0]
         out_code = ''
         for p in result['pieces']:
-            out_code += style_module['name-to-key'][p[-2]]
+            out_code += style_module['name-to-key'][p[-1]]
         return out_code
 
     else:

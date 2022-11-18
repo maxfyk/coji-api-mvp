@@ -11,5 +11,7 @@ python-geohash==0.8.5
 torchvision==0.10.0
 firebase_admin
 onnxruntime
+PyYAML>=5.3.1
+numpy<1.23.0,>=1.16.5
 geopy
 dill
