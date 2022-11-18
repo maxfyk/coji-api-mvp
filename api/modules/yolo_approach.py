@@ -2,8 +2,10 @@ import os
 import cv2
 import torch.onnx
 import math
+import numpy as np
 from PIL import Image
 from statics.constants import STYLES_PATH_FULL
+from scipy import ndimage
 
 models = {
     'geom-original': torch.hub.load('/app/yolov7', 'custom',
@@ -79,6 +81,21 @@ def process_results(codes, pieces):
 def yolo_detector(img, style_module):
     # Preprocess the image
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_edges = cv2.Canny(img_gray, 100, 100, apertureSize=3)
+    lines = cv2.HoughLinesP(img_edges, 1, math.pi / 180.0, 100, minLineLength=100, maxLineGap=5)
+
+    angles = []
+
+    for [[x1, y1, x2, y2]] in lines:
+        angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        angles.append(angle)
+
+    cv2.imshow("Detected lines", img)
+    key = cv2.waitKey(0)
+
+    median_angle = np.median(angles)
+    img = ndimage.rotate(img, median_angle)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = Image.fromarray(img)
 
