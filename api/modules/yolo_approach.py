@@ -6,7 +6,7 @@ from PIL import Image
 from statics.constants import STYLES_PATH_FULL
 
 models = {
-    'geom-original': torch.hub.load('../yolov7', 'custom',
+    'geom-original': torch.hub.load('/app/yolov7', 'custom',
                                     os.path.join(STYLES_PATH_FULL.format('geom-original'), 'model.pt'), source='local')
 }
 
