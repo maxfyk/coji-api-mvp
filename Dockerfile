@@ -2,7 +2,6 @@ FROM python:3.9-slim-buster
 
 ENV PYTHONUNBUFFERED = 1
 COPY requirements.txt /
-COPY /app/yolov7/requirements.txt /yolo_requirements.txt
 COPY start.sh /start.sh
 COPY firebase_key.json /firebase_key.json
 COPY nginx.conf /etc/nginx/conf.d/virtual.conf
