@@ -2,7 +2,7 @@ import os
 import cv2
 import torch.onnx
 import math
-from PIL import Image
+# from PIL import Image
 from statics.constants import STYLES_PATH_FULL
 
 models = {
@@ -15,7 +15,7 @@ IMG_SIZE = 640
 
 def preprocess(img):
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    img = img.transpose((2, 0, 1))
+    # img = img.transpose((2, 0, 1))
     img = img.reshape(1, 3, IMG_SIZE, IMG_SIZE)
     # mean_vec = np.array([0.485, 0.456, 0.406])
     # stddev_vec = np.array([0.229, 0.224, 0.225])
