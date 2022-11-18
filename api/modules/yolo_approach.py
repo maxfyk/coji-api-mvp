@@ -102,7 +102,6 @@ def yolo_detector(img, style_module):
     [print(p) for p in pieces]
     result = process_results(codes, pieces)
     if result:
-        result = result[0]
         out_code = ''
         for p in result['pieces']:
             out_code += style_module['name-to-key'][p[-1]]
