@@ -80,7 +80,6 @@ def process_results(codes, pieces):
 
 def yolo_detector(img, style_module):
     # Preprocess the image
-    print('before resize and lines')
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_edges = cv2.Canny(img_gray, 100, 100, apertureSize=3)
@@ -96,10 +95,8 @@ def yolo_detector(img, style_module):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = Image.fromarray(img)
 
-    print('before results')
     model = models[style_module['style-info']['name']]
     results = model([img]).pred[0].tolist()
-    print('after results')
     pieces, codes = [], []
     for r in results:
         piece_name = style_module['object-detection-model']['key-to-name'][r[-1]]
