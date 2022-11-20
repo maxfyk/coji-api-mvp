@@ -57,13 +57,14 @@ def coji_decode():
         style_name = detect_style(img)
         style_module = get_style_info(style_name)
         style_module['style-info'].update(json_request['style-info'])
-
+        print('before recognize')
         try:
             char_code = recognize_code(img, style_module)  # recognize code on image
         except Exception as e:
             print(traceback.format_exc())
             print(e)
             char_code = None
+        print('after recognize')
 
     elif decode_type == 'keyboard':
         style_name = json_request['style-info']['name']
