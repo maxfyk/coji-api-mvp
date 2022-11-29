@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.register_blueprint(coji_create_bp, url_prefix='/coji-code')
-app.register_blueprint(coji_create_bp, url_prefix='/coji-code')
+app.register_blueprint(coji_decode_bp, url_prefix='/coji-code')
 app.register_blueprint(other, url_prefix='/coji-code')
 app.register_blueprint(prometheus_metrics)
 
