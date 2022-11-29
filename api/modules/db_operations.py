@@ -75,3 +75,19 @@ def get_by_city(city, db_root=None):
     if not db_root:
         db_root = get_db_session()
     return db_root.child('code').order_by_child('location-city').equal_to(city).get()
+
+
+def update_feedback(code_id, feedback, db_root=None):
+    """Get list of all codes by city"""
+    if not db_root:
+        db_root = get_db_session()
+    new_stats = {
+        'likes': 0,
+        'dislikes': 0
+    }
+    full_stats: dict = db_root.child(f'code/{code_id}').get()
+    if 'likes' not in full_stats.keys():
+        full_stats.update(new_stats)
+    full_stats[feedback] += 1
+    update_code(code_id, full_stats, db_root)
+    return True

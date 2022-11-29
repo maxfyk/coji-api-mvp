@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask import jsonify
-
+from modules.db_operations import (
+    update_feedback
+)
 other = Blueprint('other', __name__)
 
 
@@ -8,7 +10,7 @@ other = Blueprint('other', __name__)
 def coji_code_feedback(code_id, feedback):
     """Update feedback"""
     print('REQUEST| FEEDBACK')
-
+    update_feedback(code_id, feedback)
     print('STATUS: success')
     return jsonify({
         'error': False,
