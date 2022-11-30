@@ -7,7 +7,7 @@ from modules.db_operations import (
 other = Blueprint('other', __name__)
 
 
-@other.route('/feedback/<code_id>/<feedback>/', methods=['post'])
+@other.route('/feedback/<code_id>/<feedback>', methods=['post'])
 def coji_code_feedback(code_id, feedback):
     """Update feedback"""
     print('REQUEST| FEEDBACK')
