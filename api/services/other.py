@@ -3,10 +3,11 @@ from flask import jsonify
 from modules.db_operations import (
     update_feedback
 )
+
 other = Blueprint('other', __name__)
 
 
-@other.route('/feedback/<code_id>/<feedback>/', methods=['POST'])
+@other.route('/feedback/<code_id>/<feedback>/', methods=['GET', 'POST'])
 def coji_code_feedback(code_id, feedback):
     """Update feedback"""
     print('REQUEST| FEEDBACK')
