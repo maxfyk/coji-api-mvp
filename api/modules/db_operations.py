@@ -88,7 +88,7 @@ def update_feedback(code_id, feedback, db_root=None):
     full_stats: dict = db_root.child(f'code/{code_id}').get()
     if 'likes' not in full_stats.keys():
         full_stats.update(new_stats)
-    full_stats[feedback] += 1
+    full_stats[feedback + 's'] += 1
     print(full_stats)
     update_code(code_id, full_stats, db_root)
     return True
