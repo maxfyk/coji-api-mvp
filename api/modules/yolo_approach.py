@@ -80,16 +80,6 @@ def process_results(codes, pieces):
 
 def yolo_detector(img, style_module):
     # Preprocess the image
-    h, w = img.shape[0], img.shape[1]
-    if w == h:
-        img = cv2.resize(img, (w, h))
-        new_w = int(w * 1.5)
-        new_h = int((w * 1.5) / 0.75)
-        img_new = np.zeros((new_h, new_w, 3), dtype=np.uint8)
-        yoff = round((new_h - h) / 2)
-        xoff = round((new_w - w) / 2)
-        img_new[yoff:yoff + h, xoff:xoff + w] = img
-        img = img_new
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
