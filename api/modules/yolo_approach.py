@@ -83,9 +83,9 @@ def yolo_detector(img, style_module):
     h, w = img.shape[0], img.shape[1]
     if w / h != 0.75:
         if w > h:
-            h = w / 0.75
+            h = int(w / 0.75)
         else:
-            w = h * 0.75
+            w = int(h * 0.75)
         img = cv2.resize(img, (w, h))
         print('Ratio', w, h)
     img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
