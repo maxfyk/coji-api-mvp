@@ -55,9 +55,8 @@ def coji_create():
                                STYLES_PATH_FULL.format(style_name))  # create image
     json_request['index'] = index
     if json_request['data-type'] == '3d-object':
-        obj = str(base64.b64decode(json_request['in-data']))
-        with open(os.path.join(f'/app/assets/models/', f'{char_code}.{json_request["other"]}'), 'w', encoding="utf-8") as output_file:
-            output_file.write(obj.decode('utf-8'))
+        with open(os.path.join(f'/app/assets/models/', f'{char_code}.{json_request["other"]}'), 'wb') as output_file:
+            output_file.write(base64.b64decode(json_request['in-data']))
 
         json_request[char_code]['in-data'] = os.path.join(char_code, f'.{json_request["other"]}')
     new_code = prepare_code_info(json_request, char_code)
