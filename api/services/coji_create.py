@@ -56,9 +56,9 @@ def coji_create():
     json_request['index'] = index
     if json_request['data-type'] == '3d-object':
         obj = base64.b64decode(json_request['in-data'])
-        with open(os.path.join(f'/app/assets/models/', char_code, f'.{json_request["other"]}'), 'w', encoding="utf-8") as output_file:
+        with open(os.path.join(f'/app/assets/models/', f'{char_code}.{json_request["other"]}'), 'w', encoding="utf-8") as output_file:
             output_file.write(obj.decode('utf-8'))
-            
+
         json_request[char_code]['in-data'] = os.path.join(char_code, f'.{json_request["other"]}')
     new_code = prepare_code_info(json_request, char_code)
 
