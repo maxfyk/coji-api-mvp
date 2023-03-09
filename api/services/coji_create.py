@@ -55,6 +55,7 @@ def coji_create():
     json_request['index'] = index
     new_code = prepare_code_info(json_request, char_code)
     if new_code[char_code]['data-type'] == '3d-object':
+        print(request.files)
         f = request.files['file']
         f.save(os.path.join(f'/app/assets/models/', char_code, f'.{f.split(".")[-1]}'))
         new_code[char_code]['in-data'] = os.path.join(char_code, f'.{f.split(".")[-1]}')
