@@ -1,3 +1,5 @@
+import os
+
 from datetime import datetime
 
 from flask import Blueprint
@@ -52,6 +54,11 @@ def coji_create():
                                STYLES_PATH_FULL.format(style_name))  # create image
     json_request['index'] = index
     new_code = prepare_code_info(json_request, char_code)
+    if new_code[char_code]['data-type'] == '3d-object':
+        f = request.files['file']
+        f.save(os.path.join(f'/app/assets/models/', char_code, f'.{f.split(".")[-1]}'))
+        new_code[char_code]['in-data'] = os.path.join(char_code, f'.{f.split(".")[-1]}')
+
     add_new_code(new_code)
     print(new_code)
     print('STATUS: success')
