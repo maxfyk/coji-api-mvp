@@ -1,4 +1,5 @@
 import os
+import base64
 
 from datetime import datetime
 
@@ -53,12 +54,13 @@ def coji_create():
     img = generate_visual_code(style_module, char_code,
                                STYLES_PATH_FULL.format(style_name))  # create image
     json_request['index'] = index
+    if json_request['data-type'] == '3d-object':
+        obj = base64.b64decode(json_request['in-data'])
+        with open(os.path.join(f'/app/assets/models/', char_code, f'.{json_request["other"]}'), 'w', encoding="utf-8") as output_file:
+            output_file.write(obj.decode('utf-8'))
+            
+        json_request[char_code]['in-data'] = os.path.join(char_code, f'.{json_request["other"]}')
     new_code = prepare_code_info(json_request, char_code)
-    if new_code[char_code]['data-type'] == '3d-object':
-        print(request.files)
-        f = request.files['file']
-        f.save(os.path.join(f'/app/assets/models/', char_code, f'.{f.split(".")[-1]}'))
-        new_code[char_code]['in-data'] = os.path.join(char_code, f'.{f.split(".")[-1]}')
 
     add_new_code(new_code)
     print(new_code)
